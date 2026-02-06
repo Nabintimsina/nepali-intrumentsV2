@@ -215,6 +215,13 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1440px) {
+  .featured-section .grid > * {
+    flex: 0 1 280px;
+    max-width: 280px;
+  }
+}
+
 @media (max-width: 1024px) {
   .hero-title {
     font-size: 3rem;
@@ -230,6 +237,11 @@
 
   .step-arrow {
     transform: rotate(90deg);
+  }
+
+  .featured-section .grid > * {
+    flex: 0 1 270px;
+    max-width: 270px;
   }
 }
 

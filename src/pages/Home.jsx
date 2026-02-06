@@ -5,6 +5,70 @@ import InstrumentCard from '../components/InstrumentCard'
 import { api } from '../api/client'
 import './Home.css'
 
+// Mock featured instruments data
+const mockFeaturedInstruments = [
+  {
+    id: 1,
+    name: 'Sarangi',
+    category: 'String',
+    region: 'Western Nepal',
+    image: '/images/instruments/sarangi.jpg',
+    description: 'The Sarangi is a traditional bowed string instrument carved from a single piece of wood. It produces haunting, soulful melodies.',
+    model_3d: '/models/pillows.glb',
+    audio_sample: '/audio/sarangi-sample.mp3'
+  },
+  {
+    id: 2,
+    name: 'Madal',
+    category: 'Percussion',
+    region: 'Central Nepal',
+    image: '/images/instruments/madal.jpg',
+    description: 'A cylindrical drum with two heads. Essential in Nepali folk music and dance performances.',
+    model_3d: '/models/pillows.glb',
+    audio_sample: '/audio/madal-sample.mp3'
+  },
+  {
+    id: 3,
+    name: 'Bansuri',
+    category: 'Wind',
+    region: 'Southern Nepal',
+    image: '/images/instruments/bansuri.jpg',
+    description: 'A flute made from bamboo, revered across the Himalayan regions for its ethereal sound.',
+    model_3d: '/models/pillows.glb',
+    audio_sample: '/audio/bansuri-sample.mp3'
+  },
+  {
+    id: 4,
+    name: 'Tabla',
+    category: 'Percussion',
+    region: 'Eastern Nepal',
+    image: '/images/instruments/tabla.jpg',
+    description: 'Paired drums that provide the rhythmic foundation in classical and folk music.',
+    model_3d: '/models/pillows.glb',
+    audio_sample: '/audio/tabla-sample.mp3'
+  },
+  {
+    id: 5,
+    name: 'Sitar',
+    category: 'String',
+    region: 'Northern Nepal',
+    image: '/images/instruments/sitar.jpg',
+    description: 'A string instrument with a large number of strings, known for complex melodic patterns.',
+    model_3d: '/models/pillows.glb',
+    audio_sample: '/audio/sitar-sample.mp3'
+  },
+  {
+    id: 6,
+    name: 'Sundari',
+    category: 'Wind',
+    region: 'Western Nepal',
+    image: '/images/instruments/sundari.jpg',
+    description: 'A traditional wind instrument used in religious ceremonies and folk celebrations.',
+    model_3d: '/models/pillows.glb',
+    audio_sample: '/audio/sundari-sample.mp3'
+  }
+]
+
 function Home() {
   const [featuredInstruments, setFeaturedInstruments] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -24,11 +88,14 @@ function Home() {
         const response = await api.get('instruments/', { is_featured: true })
         const items = Array.isArray(response) ? response : response?.results || []
         if (isMounted) {
-          setFeaturedInstruments(items.slice(0, 3))
+          // Use API data if available, fallback to mock data
+          setFeaturedInstruments(items.length > 0 ? items.slice(0, 6) : mockFeaturedInstruments)
         }
       } catch (err) {
         if (isMounted) {
-          setError(err.message)
+          // Use mock data on API error
+          setFeaturedInstruments(mockFeaturedInstruments)
+          setError('')
         }
       } finally {
         if (isMounted) {

@@ -86,6 +86,23 @@ CORS_ALLOWED_ORIGINS = [
     if origin.strip()
 ]
 
+# Allow credentials for authenticated requests
+CORS_ALLOW_CREDENTIALS = True
+
+# Additional CORS headers for 3D model loading
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'range',  # Important for loading large 3D model files
+]
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
