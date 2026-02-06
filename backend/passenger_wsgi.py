@@ -1,7 +1,7 @@
 import os
 import sys
 
-project_home = '/home1/bajanepa/bajanepal/backend'
+project_home = '/home1/bajanepa/bajanepalV2/backend'
 if project_home not in sys.path:
     sys.path.insert(0, project_home)
 
