@@ -1,203 +1,99 @@
 # TODO - Development Roadmap
 
-## Project Status Overview
+## Project Overview
 
-**Version**: 1.0.0 (MVP)  
-**Last Updated**: February 2026  
-**Status**: Core structure complete, ready for enhancement
+We are building "Interactive Platform for Traditional Musical Instruments of Nepal."
+The goal is to preserve and promote traditional Nepali instruments digitally. Users should be able to:
 
----
-
-## ✅ Completed Tasks
-
-### Phase 1: Foundation (COMPLETED)
-
-- [x] Project setup with Vite + React
-- [x] Basic project structure and folder organization
-- [x] Traditional Nepali color theme implementation
-- [x] Typography setup (serif headings, sans-serif body)
-- [x] Responsive CSS grid system
-- [x] Global styles and CSS variables
-
-### Phase 2: Core Components (COMPLETED)
-
-- [x] Navbar component with mobile responsiveness
-- [x] Footer component with social links
-- [x] InstrumentCard component
-- [x] ExpertCard component
-- [x] AudioPlayer component
-- [x] 3D Viewer placeholder component
-- [x] React Router setup
-
-### Phase 3: Pages (COMPLETED)
-
-- [x] Home page with hero and features
-- [x] Instruments page with filtering
-- [x] Instrument Detail page
-- [x] Learn page with topics
-- [x] Experts page
-- [x] Expert Detail page
-- [x] About page
-- [x] Contact page
-- [x] Login/Admin page
-- [x] Mock data for instruments and experts
-
-### Phase 4: Documentation (COMPLETED)
-
-- [x] README.md with comprehensive project info
-- [x] TODO.md with development roadmap
-- [x] Code comments and structure
+- Explore instruments with images, 3D models, and audio
+- Learn from structured lessons
+- Access expert insights
+- Navigate a clean, culturally-themed interface (classic Nepali colors: deep red/maroon, off-white, gold accent)
 
 ---
 
-## 🚧 In Progress
+## Next Step Requirements
 
-### Frontend Enhancements
+### Backend Setup (Django)
 
-- [ ] Add loading states and spinners
-- [ ] Implement error boundaries
-- [ ] Add form validation feedback
-- [ ] Create success/error toast notifications
-- [ ] Improve accessibility (ARIA labels, keyboard navigation)
+- [ ] Create models for Instruments, Categories, Media (images/audio/3D), Experts, and Learning Content
+- [ ] Build REST APIs to fetch, filter, and search instruments and expert profiles
+- [ ] Implement admin authentication and content management
 
----
+### Frontend Integration (React)
 
-## 📋 Priority Tasks
+- [ ] Replace static placeholders with dynamic data from APIs
+- [ ] Display instruments grid, instrument detail pages, and expert profiles dynamically
+- [ ] Implement audio playback and 3D model viewer integration
 
-### HIGH PRIORITY
+### Login / Admin Page
 
-#### 1. 3D Model Integration
-- [ ] Research and choose 3D library (Three.js vs React Three Fiber)
-- [ ] Implement basic 3D model loading
-- [ ] Add rotation, zoom, and pan controls
-- [ ] Create model viewer controls UI
-- [ ] Optimize 3D performance
-- [ ] Add fullscreen mode
-- [ ] Create fallback for unsupported browsers
+- [ ] Admin login for managing content
+- [ ] Role-based access (admin vs read-only users)
 
-#### 2. Backend Development
-- [ ] Design database schema
-- [ ] Set up backend framework (Node.js/Express or Python/Django)
-- [ ] Create RESTful API endpoints
-  - [ ] GET /api/instruments
-  - [ ] GET /api/instruments/:id
-  - [ ] GET /api/experts
-  - [ ] GET /api/experts/:id
-  - [ ] POST /api/contact
-  - [ ] POST /api/auth/login
-  - [ ] POST /api/auth/register
-- [ ] Implement user authentication (JWT)
-- [ ] Set up database (MongoDB or PostgreSQL)
-- [ ] Create admin API endpoints
-- [ ] Implement file upload for media
+### Content Management
 
-#### 3. Media Management
-- [ ] Set up cloud storage (AWS S3, Cloudinary, or similar)
-- [ ] Implement image upload and optimization
-- [ ] Set up audio file management
-- [ ] Implement 3D model file storage
-- [ ] Create media CDN integration
-- [ ] Add image lazy loading
-- [ ] Implement audio preloading
+- [ ] Ability to add/edit/delete instruments, experts, media, and learning lessons
 
 ---
 
-## 🎯 Medium Priority
+## File Structure & TODOs
 
-### Features & Functionality
+### Backend Tasks (Django)
 
-#### Search & Filter
-- [ ] Implement global search functionality
-- [ ] Add advanced filtering options
-- [ ] Create search results page
-- [ ] Add search suggestions/autocomplete
-- [ ] Implement filter persistence (URL parameters)
+- [ ] Initialize Django project and apps (instruments, experts, learning, media)
+- [ ] Configure database (PostgreSQL recommended)
+- [ ] Create models and migrations
+- [ ] Add Django admin panels for all content types
+- [ ] Implement API endpoints (DRF)
+- [ ] Add filtering and search (DRF filters)
+- [ ] Add authentication (JWT or session-based)
+- [ ] Configure media storage (local/S3)
+- [ ] Add CORS and environment settings
 
-#### User Features
-- [ ] User profile pages
-- [ ] Favorites/Bookmarks system
-- [ ] Learning progress tracking
-- [ ] Personal notes on instruments
-- [ ] Share functionality (social media)
+### Frontend Tasks (React)
 
-#### Content Management
-- [ ] Create admin dashboard
-- [ ] Instrument CRUD operations
-- [ ] Expert CRUD operations
-- [ ] Content approval workflow
-- [ ] Media library management
-- [ ] User management interface
+- [ ] Create API service layer (fetch/axios)
+- [ ] Load instruments, experts, and lessons dynamically
+- [ ] Add loading states, empty states, and error handling
+- [ ] Implement filters and search UI tied to API
+- [ ] Wire login/admin screens to backend
 
-#### Learning Features
-- [ ] Interactive quizzes
-- [ ] Video tutorial integration
-- [ ] Practice exercises
-- [ ] Progress tracking
-- [ ] Certificates/achievements
-- [ ] Learning paths/courses
+### 3D / Audio Integration
 
----
+- [ ] Decide 3D library (Three.js or React Three Fiber)
+- [ ] Load 3D model files from API/media storage
+- [ ] Add controls (rotate, zoom, fullscreen)
+- [ ] Optimize for performance and mobile
+- [ ] Add audio streaming and waveform/visual UI (optional)
 
-## 🔮 Future Enhancements
+### Testing & Deployment
 
-### Advanced Features
+- [ ] Unit tests (backend and frontend)
+- [ ] API tests and schema validation
+- [ ] E2E tests (Playwright or Cypress)
+- [ ] Deployment plan (Render/Vercel + S3/CDN)
+- [ ] CI pipeline for linting and tests
 
-#### Multimedia
-- [ ] Video player integration
-- [ ] Live streaming for workshops
-- [ ] Virtual performances
-- [ ] Interactive music lessons
-- [ ] Sheet music viewer
-- [ ] Recording/playback features
+### Future Improvements
 
-#### Social Features
-- [ ] User comments and discussions
-- [ ] Community forum
-- [ ] Expert Q&A section
-- [ ] User-generated content
-- [ ] Social sharing integration
-- [ ] Newsletter subscription
-
-#### Internationalization
-- [ ] Multi-language support (Nepali, English, Hindi)
-- [ ] RTL language support
-- [ ] Translation management
-- [ ] Localized content
-- [ ] Regional instrument variations
-
-#### Mobile Applications
-- [ ] React Native mobile app (iOS)
-- [ ] React Native mobile app (Android)
-- [ ] Offline mode
-- [ ] Push notifications
-- [ ] Mobile-specific features
-
-#### Analytics & Insights
-- [ ] Google Analytics integration
-- [ ] User behavior tracking
-- [ ] Content popularity metrics
-- [ ] Learning analytics
-- [ ] Admin dashboard with charts
-- [ ] Export reports functionality
+- [ ] Multi-language support (Nepali + English)
+- [ ] User accounts with profiles and favorites
+- [ ] Analytics and usage dashboards
+- [ ] Mobile-first performance tuning
+- [ ] Progressive Web App (offline support)
 
 ---
 
-## 🔧 Technical Improvements
+## Design Guidelines
 
-### Performance
-- [ ] Code splitting and lazy loading
-- [ ] Image optimization pipeline
-- [ ] Audio compression and streaming
-- [ ] Caching strategies
-- [ ] Bundle size optimization
-- [ ] PWA implementation
-- [ ] Service worker for offline support
+- Use classic Nepali color theme: primary deep red/maroon, secondary off-white, accent gold
+- Headings: serif/traditional font
+- Body: clean sans-serif
 
-### Testing
-- [ ] Unit tests (Jest)
-- [ ] Component tests (React Testing Library)
-- [ ] Integration tests
-- [ ] E2E tests (Cypress or Playwright)
+---
+
+**Last Updated:** February 6, 2026
 - [ ] Accessibility testing
 - [ ] Performance testing
 - [ ] Cross-browser testing

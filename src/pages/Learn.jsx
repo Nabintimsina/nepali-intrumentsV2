@@ -1,9 +1,48 @@
-import { useState } from 'react'
-import { learningTopics } from '../data/mockData'
+import { useEffect, useMemo, useState } from 'react'
+import { api } from '../api/client'
 import './Learn.css'
 
 function Learn() {
-  const [selectedTopic, setSelectedTopic] = useState(learningTopics[0])
+  const [topics, setTopics] = useState([])
+  const [selectedTopic, setSelectedTopic] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadTopics = async () => {
+      setIsLoading(true)
+      setError('')
+      try {
+        const response = await api.get('learning/')
+        const items = Array.isArray(response) ? response : response?.results || []
+        if (isMounted) {
+          setTopics(items)
+          setSelectedTopic(items[0] || null)
+        }
+      } catch (err) {
+        if (isMounted) {
+          setError(err.message)
+          setTopics([])
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    loadTopics()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  const topicIndex = useMemo(() => {
+    return topics.findIndex((topic) => topic.id === selectedTopic?.id)
+  }, [topics, selectedTopic])
 
   return (
     <div className="learn-page">
@@ -18,50 +57,67 @@ function Learn() {
         {/* Left Topic List */}
         <aside className="topics-sidebar">
           <h3>Topics</h3>
-          <nav className="topics-list">
-            {learningTopics.map(topic => (
-              <button
-                key={topic.id}
-                className={`topic-item ${selectedTopic.id === topic.id ? 'active' : ''}`}
-                onClick={() => setSelectedTopic(topic)}
-              >
-                <span className="topic-number">{topic.id}</span>
-                <span className="topic-title">{topic.title}</span>
-              </button>
-            ))}
-          </nav>
+          {isLoading ? (
+            <p>Loading lessons...</p>
+          ) : error ? (
+            <p>Unable to load lessons. {error}</p>
+          ) : (
+            <nav className="topics-list">
+              {topics.map(topic => (
+                <button
+                  key={topic.id}
+                  className={`topic-item ${selectedTopic?.id === topic.id ? 'active' : ''}`}
+                  onClick={() => setSelectedTopic(topic)}
+                >
+                  <span className="topic-number">{topic.order ?? topic.id}</span>
+                  <span className="topic-title">{topic.title}</span>
+                </button>
+              ))}
+            </nav>
+          )}
         </aside>
 
         {/* Right Content Viewer */}
         <main className="content-viewer">
-          <article className="content-article">
-            <h2>{selectedTopic.title}</h2>
-            <div 
-              className="content-body"
-              dangerouslySetInnerHTML={{ 
-                __html: selectedTopic.content.replace(/\n\n/g, '</p><p>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
-              }}
-            />
-          </article>
+          {selectedTopic ? (
+            <>
+              <article className="content-article">
+                <h2>{selectedTopic.title}</h2>
+                <div 
+                  className="content-body"
+                  dangerouslySetInnerHTML={{ 
+                    __html: selectedTopic.content
+                      .replace(/\n\n/g, '</p><p>')
+                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                  }}
+                />
+              </article>
 
-          <div className="content-nav">
-            {selectedTopic.id > 1 && (
-              <button 
-                className="btn btn-outline"
-                onClick={() => setSelectedTopic(learningTopics[selectedTopic.id - 2])}
-              >
-                ← Previous Topic
-              </button>
-            )}
-            {selectedTopic.id < learningTopics.length && (
-              <button 
-                className="btn btn-primary"
-                onClick={() => setSelectedTopic(learningTopics[selectedTopic.id])}
-              >
-                Next Topic →
-              </button>
-            )}
-          </div>
+              <div className="content-nav">
+                {topicIndex > 0 && (
+                  <button 
+                    className="btn btn-outline"
+                    onClick={() => setSelectedTopic(topics[topicIndex - 1])}
+                  >
+                    ← Previous Topic
+                  </button>
+                )}
+                {topicIndex < topics.length - 1 && (
+                  <button 
+                    className="btn btn-primary"
+                    onClick={() => setSelectedTopic(topics[topicIndex + 1])}
+                  >
+                    Next Topic →
+                  </button>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="content-article">
+              <h2>No lessons available</h2>
+              <p>Add learning content from the admin panel to get started.</p>
+            </div>
+          )}
 
           <div className="additional-resources">
             <h3>Additional Resources</h3>

@@ -1,8 +1,44 @@
+import { useEffect, useState } from 'react'
 import ExpertCard from '../components/ExpertCard'
-import { expertsData } from '../data/mockData'
+import { api } from '../api/client'
 import './Experts.css'
 
 function Experts() {
+  const [experts, setExperts] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadExperts = async () => {
+      setIsLoading(true)
+      setError('')
+      try {
+        const response = await api.get('experts/')
+        const items = Array.isArray(response) ? response : response?.results || []
+        if (isMounted) {
+          setExperts(items)
+        }
+      } catch (err) {
+        if (isMounted) {
+          setError(err.message)
+          setExperts([])
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    loadExperts()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
   return (
     <div className="experts-page">
       <div className="page-header">
@@ -22,11 +58,21 @@ function Experts() {
             </p>
           </div>
 
-          <div className="grid grid-3 experts-grid">
-            {expertsData.map(expert => (
-              <ExpertCard key={expert.id} expert={expert} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="no-results">
+              <p>Loading experts...</p>
+            </div>
+          ) : error ? (
+            <div className="no-results">
+              <p>Unable to load experts. {error}</p>
+            </div>
+          ) : (
+            <div className="grid grid-3 experts-grid">
+              {experts.map(expert => (
+                <ExpertCard key={expert.id} expert={expert} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

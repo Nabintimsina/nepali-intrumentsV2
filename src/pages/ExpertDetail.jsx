@@ -1,17 +1,59 @@
+import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, Mail, Award, Music } from 'lucide-react'
 import AudioPlayer from '../components/AudioPlayer'
-import { expertsData, instrumentsData } from '../data/mockData'
+import { api } from '../api/client'
 import './ExpertDetail.css'
 
 function ExpertDetail() {
   const { id } = useParams()
-  const expert = expertsData.find(exp => exp.id === parseInt(id))
+  const [expert, setExpert] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  if (!expert) {
+  useEffect(() => {
+    let isMounted = true
+
+    const loadExpert = async () => {
+      setIsLoading(true)
+      setError('')
+      try {
+        const response = await api.get(`experts/${id}/`)
+        if (isMounted) {
+          setExpert(response)
+        }
+      } catch (err) {
+        if (isMounted) {
+          setError(err.message)
+          setExpert(null)
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    loadExpert()
+
+    return () => {
+      isMounted = false
+    }
+  }, [id])
+
+  if (isLoading) {
+    return (
+      <div className="container" style={{ padding: '4rem 1rem', textAlign: 'center' }}>
+        <h2>Loading expert profile...</h2>
+      </div>
+    )
+  }
+
+  if (error || !expert) {
     return (
       <div className="container" style={{ padding: '4rem 1rem', textAlign: 'center' }}>
         <h2>Expert not found</h2>
+        {error && <p>{error}</p>}
         <Link to="/experts" className="btn btn-primary">
           Back to Experts
         </Link>
@@ -19,10 +61,7 @@ function ExpertDetail() {
     )
   }
 
-  // Find instruments this expert specializes in
-  const expertInstruments = instrumentsData.filter(inst => 
-    expert.linkedInstruments?.includes(inst.id)
-  )
+  const expertInstruments = expert.instruments || []
 
   return (
     <div className="expert-detail-page">
@@ -52,11 +91,11 @@ function ExpertDetail() {
               <p className="expert-expertise-large">{expert.expertise}</p>
               <div className="expert-instruments-tags">
                 <Music size={18} />
-                {expert.instruments.map((inst, index) => (
-                  <span key={index} className="instrument-tag">{inst}</span>
+                {expertInstruments.map((inst, index) => (
+                  <span key={index} className="instrument-tag">{inst.name || inst}</span>
                 ))}
               </div>
-              <a href={`mailto:${expert.contact}`} className="contact-button">
+              <a href={`mailto:${expert.contact_email}`} className="contact-button">
                 <Mail size={18} />
                 Contact {expert.name.split(' ')[0]}
               </a>
@@ -71,7 +110,7 @@ function ExpertDetail() {
           <h2>Biography</h2>
           <div className="bio-content">
             <p className="bio-quote">"{expert.bio}"</p>
-            <p className="bio-detailed">{expert.detailedBio}</p>
+            <p className="bio-detailed">{expert.detailed_bio}</p>
           </div>
         </div>
       </section>
@@ -84,7 +123,7 @@ function ExpertDetail() {
             Achievements & Recognition
           </h2>
           <ul className="achievements-list">
-            {expert.achievements.map((achievement, index) => (
+            {expert.achievements?.map((achievement, index) => (
               <li key={index} className="achievement-item">
                 <Award size={20} className="achievement-icon" />
                 <span>{achievement}</span>
@@ -102,10 +141,14 @@ function ExpertDetail() {
             Listen to {expert.name.split(' ')[0]} explain techniques and cultural context
           </p>
           <div className="audio-container">
-            <AudioPlayer 
-              audioSrc={expert.teachingAudio} 
-              title={`${expert.name} - Teaching Excerpt`}
-            />
+            {expert.teaching_audio ? (
+              <AudioPlayer 
+                audioSrc={expert.teaching_audio} 
+                title={`${expert.name} - Teaching Excerpt`}
+              />
+            ) : (
+              <p>No teaching audio available.</p>
+            )}
           </div>
         </div>
       </section>
@@ -125,7 +168,7 @@ function ExpertDetail() {
                 className="instrument-link-card"
               >
                 <div className="instrument-preview">
-                  <img src={instrument.image} alt={instrument.name} />
+                  <img src={instrument.image || '/placeholder-instrument.jpg'} alt={instrument.name} />
                 </div>
                 <div className="instrument-link-info">
                   <h3>{instrument.name}</h3>

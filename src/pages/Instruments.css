@@ -63,6 +63,22 @@
   font-size: 1rem;
 }
 
+.filter-search {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--secondary-off-white);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.filter-search:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
 .filter-options {
   display: flex;
   flex-direction: column;

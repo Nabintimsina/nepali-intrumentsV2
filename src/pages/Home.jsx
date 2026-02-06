@@ -1,11 +1,44 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Music, Users, Box, BookOpen } from 'lucide-react'
 import InstrumentCard from '../components/InstrumentCard'
-import { instrumentsData } from '../data/mockData'
+import { api } from '../api/client'
 import './Home.css'
 
 function Home() {
-  const featuredInstruments = instrumentsData.slice(0, 3)
+  const [featuredInstruments, setFeaturedInstruments] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadFeatured = async () => {
+      setIsLoading(true)
+      setError('')
+      try {
+        const response = await api.get('instruments/', { is_featured: true })
+        const items = Array.isArray(response) ? response : response?.results || []
+        if (isMounted) {
+          setFeaturedInstruments(items.slice(0, 3))
+        }
+      } catch (err) {
+        if (isMounted) {
+          setError(err.message)
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    loadFeatured()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
 
   return (
     <div className="home-page">
@@ -87,11 +120,21 @@ function Home() {
           <p className="section-subtitle">
             Discover traditional Nepali instruments from different regions and categories
           </p>
-          <div className="grid grid-3">
-            {featuredInstruments.map(instrument => (
-              <InstrumentCard key={instrument.id} instrument={instrument} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="text-center">
+              <p>Loading featured instruments...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center">
+              <p>Unable to load featured instruments. {error}</p>
+            </div>
+          ) : (
+            <div className="grid grid-3">
+              {featuredInstruments.map(instrument => (
+                <InstrumentCard key={instrument.id} instrument={instrument} />
+              ))}
+            </div>
+          )}
           <div className="text-center mt-4">
             <Link to="/instruments" className="btn btn-secondary">
               View All Instruments

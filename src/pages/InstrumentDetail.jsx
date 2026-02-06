@@ -1,18 +1,60 @@
+import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, MapPin, Tag, User } from 'lucide-react'
 import Viewer3D from '../components/Viewer3D'
 import AudioPlayer from '../components/AudioPlayer'
-import { instrumentsData, expertsData } from '../data/mockData'
+import { api } from '../api/client'
 import './InstrumentDetail.css'
 
 function InstrumentDetail() {
   const { id } = useParams()
-  const instrument = instrumentsData.find(inst => inst.id === parseInt(id))
+  const [instrument, setInstrument] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  if (!instrument) {
+  useEffect(() => {
+    let isMounted = true
+
+    const loadInstrument = async () => {
+      setIsLoading(true)
+      setError('')
+      try {
+        const response = await api.get(`instruments/${id}/`)
+        if (isMounted) {
+          setInstrument(response)
+        }
+      } catch (err) {
+        if (isMounted) {
+          setError(err.message)
+          setInstrument(null)
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    loadInstrument()
+
+    return () => {
+      isMounted = false
+    }
+  }, [id])
+
+  if (isLoading) {
+    return (
+      <div className="container" style={{ padding: '4rem 1rem', textAlign: 'center' }}>
+        <h2>Loading instrument...</h2>
+      </div>
+    )
+  }
+
+  if (error || !instrument) {
     return (
       <div className="container" style={{ padding: '4rem 1rem', textAlign: 'center' }}>
         <h2>Instrument not found</h2>
+        {error && <p>{error}</p>}
         <Link to="/instruments" className="btn btn-primary">
           Back to Instruments
         </Link>
@@ -20,10 +62,7 @@ function InstrumentDetail() {
     )
   }
 
-  // Find experts associated with this instrument
-  const relatedExperts = expertsData.filter(expert => 
-    expert.linkedInstruments?.includes(instrument.id)
-  )
+  const relatedExperts = instrument.experts || []
 
   return (
     <div className="instrument-detail-page">
@@ -61,11 +100,15 @@ function InstrumentDetail() {
           <div className="viewer-grid">
             <div className="viewer-container">
               <h2>3D Model</h2>
-              <Viewer3D modelSrc={instrument.model3D} title={instrument.name} />
+              <Viewer3D modelSrc={instrument.model_3d} title={instrument.name} />
             </div>
             <div className="sound-container">
               <h2>Authentic Sound</h2>
-              <AudioPlayer audioSrc={instrument.sound} title={`${instrument.name} Sample`} />
+              {instrument.audio_sample ? (
+                <AudioPlayer audioSrc={instrument.audio_sample} title={`${instrument.name} Sample`} />
+              ) : (
+                <p>No audio sample available.</p>
+              )}
               <div className="sound-info">
                 <h3>About the Sound</h3>
                 <p>
@@ -89,7 +132,7 @@ function InstrumentDetail() {
             </div>
             <div className="info-card">
               <h3>Cultural Significance</h3>
-              <p>{instrument.culturalSignificance}</p>
+              <p>{instrument.cultural_significance}</p>
             </div>
             <div className="info-card">
               <h3>Materials & Construction</h3>
@@ -97,7 +140,7 @@ function InstrumentDetail() {
             </div>
             <div className="info-card">
               <h3>Playing Technique</h3>
-              <p>{instrument.playingTechnique}</p>
+              <p>{instrument.playing_technique}</p>
             </div>
           </div>
         </div>
