@@ -1,9 +1,9 @@
 {
   "name": "nepali-instruments-platform",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
-  "description": "Interactive Platform for Traditional Musical Instruments of Nepal",
+  "description": "Interactive Platform for Traditional Musical Instruments of Nepal - Production Ready",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

@@ -127,10 +127,11 @@
 
 /* Institutions Section */
 .institutions-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--spacing-md);
   margin-top: var(--spacing-xl);
+  justify-content: center;
 }
 
 .institution-card {
@@ -139,6 +140,8 @@
   border-radius: var(--radius-md);
   text-align: center;
   box-shadow: 0 2px 6px var(--shadow-color);
+  flex: 0 1 300px;
+  max-width: 300px;
 }
 
 .institution-card h4 {
@@ -150,6 +153,72 @@
 .institution-card p {
   color: var(--accent-gold);
   font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Development Team Section */
+.development-team-section {
+  background-color: var(--secondary-off-white);
+}
+
+.development-team-section .section-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-maroon);
+  font-size: 2.25rem;
+  margin-bottom: var(--spacing-xl);
+}
+
+.team-content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.team-intro {
+  text-align: center;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: var(--spacing-xl);
+}
+
+.developers-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+  justify-content: center;
+}
+
+.developer-card {
+  background-color: var(--secondary-light);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 8px var(--shadow-color);
+  border-top: 4px solid var(--accent-gold);
+  text-align: center;
+  transition: all var(--transition-medium);
+  flex: 0 1 300px;
+  max-width: 300px;
+}
+
+.developer-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px var(--shadow-color);
+}
+
+.developer-card h3 {
+  color: var(--primary-maroon);
+  font-size: 1.3rem;
+  margin-bottom: var(--spacing-md);
+  font-weight: 600;
+}
+
+.developer-education {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
   font-weight: 500;
 }
 
@@ -204,10 +273,6 @@
   .users-list {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  .institutions-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 @media (max-width: 768px) {
@@ -220,9 +285,22 @@
   }
 
   .objectives-grid,
-  .users-list,
-  .institutions-list {
+  .users-list {
     grid-template-columns: 1fr;
+  }
+
+  .development-team-section .section-title {
+    font-size: 1.85rem;
+  }
+
+  .team-intro {
+    font-size: 0.95rem;
+  }
+
+  .developer-card,
+  .institution-card {
+    flex: 1 1 250px;
+    max-width: 250px;
   }
 
   .cta-content h2 {

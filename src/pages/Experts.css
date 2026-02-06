@@ -11,7 +11,16 @@
 }
 
 .experts-grid {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  justify-content: center;
   margin-top: var(--spacing-xl);
+}
+
+.experts-grid > * {
+  flex: 0 1 300px;
+  max-width: 300px;
 }
 
 /* Become an Expert Section */
@@ -35,10 +44,11 @@
 }
 
 .expert-benefits {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
+  justify-content: center;
 }
 
 .benefit {
@@ -46,6 +56,8 @@
   padding: var(--spacing-lg);
   border-radius: var(--radius-lg);
   box-shadow: 0 2px 8px var(--shadow-color);
+  flex: 0 1 280px;
+  max-width: 280px;
 }
 
 .benefit h4 {
@@ -61,11 +73,29 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .expert-benefits {
-    grid-template-columns: 1fr;
+  .experts-grid > * {
+    flex: 0 1 250px;
+    max-width: 250px;
+  }
+
+  .benefit {
+    flex: 0 1 250px;
+    max-width: 250px;
   }
 
   .become-expert-content h2 {
     font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .experts-grid > * {
+    flex: 0 1 100%;
+    max-width: 100%;
+  }
+
+  .benefit {
+    flex: 0 1 100%;
+    max-width: 100%;
   }
 }

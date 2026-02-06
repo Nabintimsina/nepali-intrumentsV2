@@ -9,6 +9,10 @@ function Learn() {
   const [error, setError] = useState('')
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     let isMounted = true
 
     const loadTopics = async () => {

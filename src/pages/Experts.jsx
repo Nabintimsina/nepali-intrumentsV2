@@ -1,12 +1,22 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import ExpertCard from '../components/ExpertCard'
 import { api } from '../api/client'
 import './Experts.css'
 
 function Experts() {
+  const navigate = useNavigate()
   const [experts, setExperts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  const handleApplyExpert = () => {
+    navigate('/contact?subject=Expert%20Application')
+  }
 
   useEffect(() => {
     let isMounted = true
@@ -99,7 +109,7 @@ function Experts() {
                 <p>Help ensure traditional techniques and knowledge are passed to future generations</p>
               </div>
             </div>
-            <button className="btn btn-primary btn-large">
+            <button className="btn btn-primary btn-large" onClick={handleApplyExpert}>
               Apply to Become an Expert
             </button>
           </div>

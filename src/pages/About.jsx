@@ -1,7 +1,26 @@
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Target, Users, Cpu, Building } from 'lucide-react'
 import './About.css'
 
 function About() {
+  const location = useLocation()
+
+  useEffect(() => {
+    // Scroll to element if hash exists
+    if (location.hash) {
+      const elementId = location.hash.replace('#', '')
+      const element = document.getElementById(elementId)
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }, 0)
+      }
+    } else {
+      // Scroll to top if no hash
+      window.scrollTo(0, 0)
+    }
+  }, [location])
   return (
     <div className="about-page">
       <div className="page-header">
@@ -129,46 +148,6 @@ function About() {
         </div>
       </section>
 
-      {/* Technology Used */}
-      <section className="section tech-section bg-secondary">
-        <div className="container">
-          <h2 className="section-title">
-            <Cpu size={28} />
-            Technology Stack
-          </h2>
-          <div className="tech-content">
-            <div className="tech-category">
-              <h3>Frontend Development</h3>
-              <ul>
-                <li><strong>React 18:</strong> Modern component-based UI development</li>
-                <li><strong>React Router:</strong> Client-side routing and navigation</li>
-                <li><strong>Vite:</strong> Fast build tool and development server</li>
-                <li><strong>CSS3:</strong> Custom styling with traditional Nepali color themes</li>
-              </ul>
-            </div>
-            <div className="tech-category">
-              <h3>Planned Integrations</h3>
-              <ul>
-                <li><strong>Three.js / React Three Fiber:</strong> Interactive 3D model visualization</li>
-                <li><strong>Web Audio API:</strong> Enhanced audio playback and manipulation</li>
-                <li><strong>Backend API:</strong> Node.js/Express or Python/Django for data management</li>
-                <li><strong>Database:</strong> MongoDB or PostgreSQL for content storage</li>
-              </ul>
-            </div>
-            <div className="tech-category">
-              <h3>Future Features</h3>
-              <ul>
-                <li>User authentication and personalized learning paths</li>
-                <li>Interactive 3D model manipulation</li>
-                <li>Video streaming for expert demonstrations</li>
-                <li>Multi-language support (Nepali, English, Hindi)</li>
-                <li>Mobile applications (iOS and Android)</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Supporting Institutions */}
       <section className="section institutions-section">
         <div className="container">
@@ -178,28 +157,47 @@ function About() {
           </h2>
           <div className="institutions-list">
             <div className="institution-card">
-              <h4>Ministry of Culture, Tourism & Civil Aviation</h4>
+              <h4>Ministry of Education, Science and Technology (MoEST)</h4>
               <p>Government of Nepal</p>
             </div>
-            <div className="institution-card">
-              <h4>Nepal Music Academy</h4>
-              <p>Education & Research</p>
-            </div>
-            <div className="institution-card">
-              <h4>UNESCO Nepal</h4>
-              <p>Cultural Preservation Support</p>
-            </div>
-            <div className="institution-card">
-              <h4>Tribhuvan University</h4>
-              <p>Department of Music</p>
-            </div>
-            <div className="institution-card">
-              <h4>Nepal Academy of Music and Drama</h4>
-              <p>Traditional Arts Preservation</p>
-            </div>
-            <div className="institution-card">
-              <h4>Various Cultural Organizations</h4>
-              <p>Community Partners</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Development Team */}
+      <section id="development-team" className="section development-team-section">
+        <div className="container">
+          <h2 className="section-title">Development Team</h2>
+          <div className="team-content">
+            <p className="team-intro">
+              This platform was developed by a dedicated team of engineering students committed to 
+              preserving Nepal's cultural heritage through technology.
+            </p>
+            
+            <div className="developers-list">
+              <div className="developer-card">
+                <h3>Nabin Timsina</h3>
+                <p className="developer-education">
+                  Bachelor of Engineering (Electronics, Communication & Information Engineering)<br/>
+                  Advanced College of Engineering and Management
+                </p>
+              </div>
+              
+              <div className="developer-card">
+                <h3>Yuttena Singh Dangol</h3>
+                <p className="developer-education">
+                  Bachelor of Engineering (Electronics, Communication & Information Engineering)<br/>
+                  Advanced College of Engineering and Management
+                </p>
+              </div>
+              
+              <div className="developer-card">
+                <h3>Prepshuna Dhakal</h3>
+                <p className="developer-education">
+                  Bachelor of Engineering (Electronics, Communication & Information Engineering)<br/>
+                  Advanced College of Engineering and Management
+                </p>
+              </div>
             </div>
           </div>
         </div>

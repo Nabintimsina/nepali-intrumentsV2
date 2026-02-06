@@ -1,6 +1,8 @@
 from rest_framework import viewsets
-from rest_framework.permissions import AllowAny
-from .models import Category, Instrument, Media, Expert, LearningContent
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from .models import Category, Instrument, Media, Expert, LearningContent, Contact
 from .serializers import (
     CategorySerializer,
     InstrumentListSerializer,
@@ -9,6 +11,7 @@ from .serializers import (
     ExpertListSerializer,
     ExpertDetailSerializer,
     LearningContentSerializer,
+    ContactSerializer,
 )
 from .permissions import IsAdminOrReadOnly
 from .filters import InstrumentFilter
@@ -56,3 +59,20 @@ class LearningContentViewSet(viewsets.ModelViewSet):
     serializer_class = LearningContentSerializer
     permission_classes = [AllowAny]
     ordering_fields = ['order', 'title']
+
+
+class ContactViewSet(viewsets.ModelViewSet):
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
+    permission_classes = [AllowAny]
+    ordering_fields = ['created_at']
+
+    def get_permissions(self):
+        # Allow anyone to create contact messages
+        if self.action == 'create':
+            return [AllowAny()]
+        # Only admins can view, update, delete
+        return [IsAdminOrReadOnly()]
+
+    def perform_create(self, serializer):
+        serializer.save()

@@ -13,6 +13,10 @@ function InstrumentDetail() {
   const [error, setError] = useState('')
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [id])
+
+  useEffect(() => {
     let isMounted = true
 
     const loadInstrument = async () => {

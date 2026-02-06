@@ -13,6 +13,10 @@ function Instruments() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   const regions = useMemo(() => {
     const uniqueRegions = Array.from(new Set(instruments.map((item) => item.region))).filter(Boolean)
     return ['All', ...uniqueRegions]

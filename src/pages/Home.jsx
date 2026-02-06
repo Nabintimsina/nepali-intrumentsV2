@@ -11,6 +11,10 @@ function Home() {
   const [error, setError] = useState('')
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     let isMounted = true
 
     const loadFeatured = async () => {

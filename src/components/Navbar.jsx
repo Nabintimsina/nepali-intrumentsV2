@@ -62,11 +62,6 @@ function Navbar() {
               Contact
             </Link>
           </li>
-          <li>
-            <Link to="/login" className="btn-login" onClick={closeMenu}>
-              Login
-            </Link>
-          </li>
         </ul>
       </div>
     </nav>

@@ -129,7 +129,15 @@
 }
 
 .instruments-grid {
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  justify-content: center;
+}
+
+.instruments-grid > * {
+  flex: 0 1 300px;
+  max-width: 300px;
 }
 
 /* No Results */
@@ -163,22 +171,25 @@
   }
 
   .instruments-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .instruments-grid > * {
+    flex: 0 1 280px;
+    max-width: 280px;
   }
 }
 
 @media (max-width: 768px) {
-  .instruments-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  .instruments-grid > * {
+    flex: 0 1 250px;
+    max-width: 250px;
   }
 }
 
 @media (max-width: 480px) {
-  .filter-options {
-    flex-direction: column;
-  }
-
-  .instruments-grid {
-    grid-template-columns: 1fr;
+  .instruments-grid > * {
+    flex: 0 1 100%;
+    max-width: 100%;
   }
 }

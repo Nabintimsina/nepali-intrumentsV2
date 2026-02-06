@@ -201,6 +201,19 @@
   color: var(--primary-maroon);
 }
 
+/* Featured Instruments Section */
+.featured-section .grid {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  justify-content: center;
+}
+
+.featured-section .grid > * {
+  flex: 0 1 300px;
+  max-width: 300px;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .hero-title {
@@ -248,6 +261,11 @@
     height: 30px;
   }
 
+  .featured-section .grid > * {
+    flex: 0 1 250px;
+    max-width: 250px;
+  }
+
   .cta-content h2 {
     font-size: 2rem;
   }
@@ -278,5 +296,10 @@
   .btn-large {
     width: 100%;
     justify-content: center;
+  }
+
+  .featured-section .grid > * {
+    flex: 0 1 100%;
+    max-width: 100%;
   }
 }

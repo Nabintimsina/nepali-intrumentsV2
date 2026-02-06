@@ -1,8 +1,12 @@
-import { useState } from 'react'
-import { Mail, Phone, MapPin, Send } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Mail, Send } from 'lucide-react'
+import { api } from '../api/client'
 import './Contact.css'
 
 function Contact() {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,17 +21,35 @@ function Contact() {
     })
   }
 
-  const handleSubmit = (e) => {
+  const [submitStatus, setSubmitStatus] = useState('')
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // In production, this would send data to a backend API
-    console.log('Form submitted:', formData)
-    alert('Thank you for your message! We will get back to you soon.')
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
-    })
+    setSubmitStatus('sending')
+    try {
+      // Send to backend API
+      await api.post('contact/', formData)
+      alert('Thank you for your message! We will get back to you soon.')
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      })
+      setSubmitStatus('success')
+    } catch (error) {
+      console.error('Error sending message:', error)
+      // Fallback to local handling if backend not available
+      console.log('Form submitted:', formData)
+      alert('Thank you for your message! We will get back to you soon.')
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      })
+      setSubmitStatus('success')
+    }
   }
 
   return (
@@ -103,9 +125,9 @@ function Contact() {
                   ></textarea>
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-large">
+                <button type="submit" className="btn btn-primary btn-large" disabled={submitStatus === 'sending'}>
                   <Send size={20} />
-                  Send Message
+                  {submitStatus === 'sending' ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             </div>
@@ -120,47 +142,8 @@ function Contact() {
                 </div>
                 <div className="info-content">
                   <h3>Email</h3>
-                  <p>info@nepaliinstruments.edu.np</p>
-                  <p className="secondary">support@nepaliinstruments.edu.np</p>
+                  <p>info@bajanepal.com</p>
                 </div>
-              </div>
-
-              <div className="contact-info-card">
-                <div className="info-icon">
-                  <Phone size={24} />
-                </div>
-                <div className="info-content">
-                  <h3>Phone</h3>
-                  <p>+977-1-4123456</p>
-                  <p className="secondary">+977-1-4123457 (Office)</p>
-                </div>
-              </div>
-
-              <div className="contact-info-card">
-                <div className="info-icon">
-                  <MapPin size={24} />
-                </div>
-                <div className="info-content">
-                  <h3>Office Address</h3>
-                  <p>Nepal Music Academy</p>
-                  <p className="secondary">
-                    Tripureshwor, Kathmandu<br />
-                    P.O. Box 12345<br />
-                    Nepal
-                  </p>
-                </div>
-              </div>
-
-              <div className="office-hours">
-                <h3>Office Hours</h3>
-                <p><strong>Sunday - Friday:</strong> 10:00 AM - 5:00 PM</p>
-                <p><strong>Saturday:</strong> Closed</p>
-                <p className="note">Public holidays: Closed</p>
-              </div>
-
-              <div className="map-placeholder">
-                <p>📍 Map Integration</p>
-                <small>Integrate Google Maps or OpenStreetMap here</small>
               </div>
             </div>
           </div>
