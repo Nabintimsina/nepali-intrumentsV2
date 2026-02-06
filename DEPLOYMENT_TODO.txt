@@ -1,0 +1,133 @@
+===============================================================================
+PRODUCTION DEPLOYMENT TODO - Traditional Musical Instruments of Nepal
+===============================================================================
+Domain: bajanepal.com
+Date: February 6, 2026
+===============================================================================
+
+STEP 1: BUILD LOCALLY
+[ ] Run: npm run build
+[ ] Verify dist/ folder created
+[ ] Check .env.production has correct API URL
+
+STEP 2: UPLOAD FILES TO SERVER
+[ ] Upload backend/ → /home1/bajanepa/bajanepal/backend/
+    - manage.py
+    - passenger_wsgi.py
+    - requirements.txt
+    - db.sqlite3
+    - nepali_platform/ folder
+    - catalog/ folder
+    - media/ folder
+
+[ ] Upload dist/ contents → /home1/bajanepa/public_html/
+    - index.html
+    - assets/ folder
+
+[ ] Upload public/.htaccess → /home1/bajanepa/public_html/.htaccess
+
+STEP 3: CONFIGURE CPANEL PYTHON APP
+[ ] Login to cPanel → Software → Setup Python App
+[ ] Click "Create Application"
+[ ] Set Python Version: 3.9+
+[ ] Set Application Root: /home1/bajanepa/bajanepal/backend
+[ ] Set Application URL: /api
+[ ] Set Application Startup File: passenger_wsgi.py
+[ ] Set Application Entry Point: application
+[ ] Click "Create/Save"
+
+STEP 4: INSTALL DEPENDENCIES
+[ ] In Python App page → "Configuration Files" section
+[ ] Click "Run Pip Install"
+[ ] Select requirements.txt
+[ ] Click "Install"
+[ ] Wait for completion
+
+STEP 5: START PYTHON APP
+[ ] Click "Start" button
+[ ] Wait for status: "Running" (green)
+
+STEP 6: RUN DATABASE MIGRATIONS (cPanel Terminal)
+[ ] Open: cPanel → Advanced → Terminal
+[ ] Run: cd /home1/bajanepa/bajanepal/backend
+[ ] Run: python manage.py migrate --settings=nepali_platform.settings_production
+
+STEP 7: COLLECT STATIC FILES (cPanel Terminal)
+[ ] Run: python manage.py collectstatic --noinput --settings=nepali_platform.settings_production
+[ ] Verify: 161 static files copied message
+
+STEP 8: CREATE ADMIN USER (cPanel Terminal)
+[ ] Option A: Run: python manage.py createsuperuser --settings=nepali_platform.settings_production
+    - Enter username, email, password
+[ ] Option B: Run: python create_admin.py
+    - Default: admin/admin123 (CHANGE THIS!)
+
+STEP 9: TEST DEPLOYMENT
+[ ] Test Admin: https://bajanepal.com/api/admin/
+    - Login page loads with styling
+    - Can login successfully
+    
+[ ] Test API: https://bajanepal.com/api/
+    - Returns JSON/browsable API
+    
+[ ] Test Instruments: https://bajanepal.com/api/instruments/
+    - Returns instrument list
+    
+[ ] Test Experts: https://bajanepal.com/api/catalog/experts/
+    - Returns expert list
+    
+[ ] Test Frontend: https://bajanepal.com/
+    - Homepage loads
+    - Navigation works
+    - Data displays from API
+    - All routes accessible
+
+STEP 10: SECURITY
+[ ] Change default admin password (if used script)
+[ ] Verify SSL certificate active
+[ ] Configure backups in cPanel
+
+===============================================================================
+QUICK COMMANDS (Server Terminal)
+===============================================================================
+
+# Navigate to backend
+cd /home1/bajanepa/bajanepal/backend
+
+# Run migrations
+python manage.py migrate --settings=nepali_platform.settings_production
+
+# Collect static
+python manage.py collectstatic --noinput --settings=nepali_platform.settings_production
+
+# Create superuser
+python manage.py createsuperuser --settings=nepali_platform.settings_production
+
+# View logs
+tail -f error.log
+
+===============================================================================
+TROUBLESHOOTING
+===============================================================================
+
+Python App Error?
+→ Check error log in Python Apps
+→ Verify passenger_wsgi.py exists
+→ Restart Python app
+
+404 on /api?
+→ Check Application URL is /api
+→ Verify .htaccess in public_html/
+→ Restart Python app
+
+Admin No Styling?
+→ Re-run collectstatic command
+→ Clear browser cache
+
+CORS Errors?
+→ Check ALLOWED_HOSTS in settings_production.py
+→ Restart Python app
+
+===============================================================================
+DEPLOYMENT COMPLETE!
+===============================================================================

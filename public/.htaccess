@@ -1,0 +1,21 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # DO NOT rewrite /api requests - let Python app handle them
+  RewriteRule ^api(/|$) - [L]
+
+  # DO NOT rewrite /api/static/ - serve Django static files
+  RewriteRule ^api/static/ - [L]
+
+  # DO NOT rewrite /api/media/ - serve Django media files
+  RewriteRule ^api/media/ - [L]
+
+  # If the requested filename is not a directory
+  RewriteCond %{REQUEST_FILENAME} !-d
+  # If the requested filename is not a file
+  RewriteCond %{REQUEST_FILENAME} !-f
+
+  # Rewrite all other requests to index.html (React Router)
+  RewriteRule ^ index.html [QSA,L]
+</IfModule>
