@@ -1,0 +1,71 @@
+.experts-intro {
+  max-width: 800px;
+  margin: 0 auto var(--spacing-xl);
+  text-align: center;
+}
+
+.experts-intro p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.experts-grid {
+  margin-top: var(--spacing-xl);
+}
+
+/* Become an Expert Section */
+.become-expert-content {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.become-expert-content h2 {
+  color: var(--primary-maroon);
+  font-size: 2.25rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.become-expert-content > p {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xl);
+  line-height: 1.7;
+}
+
+.expert-benefits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.benefit {
+  background-color: var(--secondary-light);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.benefit h4 {
+  color: var(--primary-maroon);
+  font-size: 1.2rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.benefit p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .expert-benefits {
+    grid-template-columns: 1fr;
+  }
+
+  .become-expert-content h2 {
+    font-size: 1.75rem;
+  }
+}
