@@ -36,8 +36,8 @@ STATIC_URL = '/api/static/'
 STATIC_ROOT = '/home1/bajanepa/public_html/api/static'
 
 MEDIA_URL = '/api/media/'
-# Store media inside public_html so Apache can serve /api/media/* directly
-MEDIA_ROOT = '/home1/bajanepa/public_html/api/media'
+# Media files stored here and accessed via symlink at /home1/bajanepa/public_html/api/media
+MEDIA_ROOT = BASE_DIR / 'media'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = False  # cPanel handles SSL
