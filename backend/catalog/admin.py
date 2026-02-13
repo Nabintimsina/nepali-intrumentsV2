@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Instrument, Media, Expert, LearningContent, Contact
+from .models import Category, Instrument, Media, Expert, LearningContent, Contact, Tutorial, TunerConfiguration
 
 
 @admin.register(Category)
@@ -48,6 +48,22 @@ class ContactAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'subject', 'is_read', 'created_at')
     list_filter = ('is_read', 'created_at')
     search_fields = ('name', 'email', 'subject', 'message')
+
+
+@admin.register(Tutorial)
+class TutorialAdmin(admin.ModelAdmin):
+    list_display = ('title', 'instrument', 'instructor_name', 'duration', 'created_at')
+    list_filter = ('instrument', 'created_at')
+    search_fields = ('title', 'instructor_name', 'description')
+    readonly_fields = ('created_at', 'updated_at')
+
+
+@admin.register(TunerConfiguration)
+class TunerConfigurationAdmin(admin.ModelAdmin):
+    list_display = ('instrument', 'tuning_name', 'is_default', 'created_at')
+    list_filter = ('instrument', 'is_default', 'created_at')
+    search_fields = ('instrument__name', 'tuning_name')
+    readonly_fields = ('created_at', 'updated_at')
     readonly_fields = ('created_at',)
     actions = ['mark_as_read', 'mark_as_unread']
 

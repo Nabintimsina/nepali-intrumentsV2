@@ -6,6 +6,8 @@ from .views import (
     ExpertViewSet,
     LearningContentViewSet,
     ContactViewSet,
+    TutorialViewSet,
+    TunerConfigurationViewSet,
 )
 
 router = DefaultRouter()
@@ -15,5 +17,7 @@ router.register('media', MediaViewSet)
 router.register('experts', ExpertViewSet)
 router.register('learning', LearningContentViewSet)
 router.register('contact', ContactViewSet)
+router.register('tutorials', TutorialViewSet)
+router.register('tuner-configurations', TunerConfigurationViewSet)
 
 urlpatterns = router.urls

@@ -3,12 +3,16 @@ import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, MapPin, Tag, User } from 'lucide-react'
 import Viewer3D from '../components/Viewer3D'
 import AudioPlayer from '../components/AudioPlayer'
+import VideoTutorial from '../components/VideoTutorial'
+import Tuner from '../components/Tuner'
 import { api } from '../api/client'
 import './InstrumentDetail.css'
 
 function InstrumentDetail() {
   const { id } = useParams()
   const [instrument, setInstrument] = useState(null)
+  const [tutorials, setTutorials] = useState([])
+  const [tunerConfig, setTunerConfig] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -26,6 +30,32 @@ function InstrumentDetail() {
         const response = await api.get(`instruments/${id}/`)
         if (isMounted) {
           setInstrument(response)
+        }
+
+        // Load tutorials
+        try {
+          const tutorialsData = await api.get(`instruments/${id}/tutorials/`)
+          if (isMounted) {
+            setTutorials(tutorialsData || [])
+          }
+        } catch (err) {
+          // Tutorials may not exist, this is fine
+          if (isMounted) {
+            setTutorials([])
+          }
+        }
+
+        // Load tuner config
+        try {
+          const configData = await api.get(`instruments/${id}/tuner_config/`)
+          if (isMounted && configData) {
+            setTunerConfig(configData)
+          }
+        } catch (err) {
+          // Tuner config may not exist, this is fine
+          if (isMounted) {
+            setTunerConfig(null)
+          }
         }
       } catch (err) {
         if (isMounted) {
@@ -125,6 +155,12 @@ function InstrumentDetail() {
           </div>
         </div>
       </section>
+
+      {/* Video Tutorial Section */}
+      <VideoTutorial tutorials={tutorials} />
+
+      {/* Instrument Tuner Section */}
+      <Tuner tunerConfig={tunerConfig} />
 
       {/* Detailed Information */}
       <section className="section info-section bg-secondary">

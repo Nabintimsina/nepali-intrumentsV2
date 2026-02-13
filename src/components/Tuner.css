@@ -1,0 +1,490 @@
+.tuner-section {
+  background: linear-gradient(135deg, #f5f1ea 0%, #faf8f3 100%);
+  padding: 2rem 0;
+}
+
+.tuner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  padding: 0.8rem 0;
+  transition: opacity 0.3s ease;
+}
+
+.tuner-header:hover {
+  opacity: 0.8;
+}
+
+.tuner-header .section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0;
+  color: #7d3c2a;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.expand-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #7d3c2a;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.expand-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Tuner Content */
+.tuner-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Tuning Info */
+.tuning-info {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.tuning-name {
+  margin: 0 0 1rem 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.target-notes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.95rem;
+}
+
+.target-notes strong {
+  color: #7d3c2a;
+  font-weight: 600;
+}
+
+.notes-list {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.note-badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background: linear-gradient(135deg, #d4a574 0%, #b8895a 100%);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Error Message */
+.error-message {
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: #c33;
+}
+
+.error-message p {
+  margin: 0.5rem 0;
+}
+
+.error-message .help-text {
+  font-size: 0.85rem;
+  color: #a22;
+}
+
+/* Tuner Interface */
+.tuner-interface {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+/* Frequency Display */
+.frequency-display {
+  text-align: center;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.frequency-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #7d3c2a;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.05em;
+}
+
+.frequency-value.waiting {
+  color: #999;
+  font-size: 2.5rem;
+}
+
+.note-info {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-top: 0.8rem;
+  font-weight: 600;
+}
+
+.note-name {
+  font-size: 1.4rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  background: #f5f5f5;
+  color: #7d3c2a;
+  font-family: 'Courier New', monospace;
+  transition: all 0.3s ease;
+}
+
+.note-name.in-tune {
+  background: #e8f5e9;
+  color: #2e7d32;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+}
+
+.note-name.sharp {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.note-name.flat {
+  background: #e3f2fd;
+  color: #01579b;
+}
+
+.cent-diff {
+  font-size: 0.95rem;
+  color: #999;
+  min-width: 60px;
+}
+
+/* Tuning Meter */
+.tuning-meter {
+  width: 100%;
+  max-width: 400px;
+}
+
+.meter-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  color: #999;
+  font-weight: 500;
+}
+
+.meter-label .status {
+  font-weight: 600;
+  color: #7d3c2a;
+  transition: all 0.3s ease;
+}
+
+.status.in-tune {
+  color: #2e7d32;
+}
+
+.status.sharp {
+  color: #e65100;
+}
+
+.status.flat {
+  color: #01579b;
+}
+
+.meter-bar {
+  position: relative;
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.meter-scale {
+  position: absolute;
+  top: -4px;
+  left: 0;
+  right: 0;
+  height: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.scale-mark {
+  width: 2px;
+  height: 100%;
+  background: #ddd;
+  position: absolute;
+}
+
+.meter-fill {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.meter-needle {
+  position: absolute;
+  width: 3px;
+  height: 100%;
+  background: #7d3c2a;
+  top: 0;
+  transform: translateX(-50%);
+  transition: left 0.1s ease-out;
+  box-shadow: 0 0 4px rgba(125, 60, 42, 0.5);
+}
+
+.meter-needle.in-tune {
+  background: #4caf50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+}
+
+.meter-needle.sharp {
+  background: #ff6f00;
+}
+
+.meter-needle.flat {
+  background: #1976d2;
+}
+
+/* Tuning Indicator */
+.tuning-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #7d3c2a;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  background: #f5f5f5;
+  transition: all 0.3s ease;
+}
+
+.indicator-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ccc;
+  animation: pulse 1s infinite;
+}
+
+.tuning-indicator.in-tune {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 2px solid #4caf50;
+}
+
+.tuning-indicator.in-tune .indicator-dot {
+  background: #4caf50;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
+}
+
+.tuning-indicator.sharp {
+  background: #fff3e0;
+  color: #e65100;
+  border: 2px solid #ff6f00;
+}
+
+.tuning-indicator.sharp .indicator-dot {
+  background: #ff6f00;
+}
+
+.tuning-indicator.flat {
+  background: #e3f2fd;
+  color: #01579b;
+  border: 2px solid #1976d2;
+}
+
+.tuning-indicator.flat .indicator-dot {
+  background: #1976d2;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Microphone Button */
+.mic-button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.8rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #7d3c2a 0%, #5a2a1f 100%);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(125, 60, 42, 0.3);
+  min-width: 180px;
+  justify-content: center;
+}
+
+.mic-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(125, 60, 42, 0.4);
+}
+
+.mic-button:active {
+  transform: translateY(0);
+}
+
+.mic-button.listening {
+  background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+  box-shadow: 0 0 20px rgba(211, 47, 47, 0.4);
+}
+
+.mic-button.listening:hover {
+  box-shadow: 0 0 24px rgba(211, 47, 47, 0.6);
+}
+
+/* Instructions */
+.tuner-instructions {
+  background: #fafafa;
+  border-left: 4px solid #d4a574;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.tuner-instructions h4 {
+  margin: 0 0 1rem 0;
+  color: #7d3c2a;
+  font-weight: 600;
+}
+
+.tuner-instructions ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  list-style: none;
+}
+
+.tuner-instructions li {
+  margin: 0.5rem 0;
+  color: #555;
+  font-size: 0.9rem;
+  position: relative;
+  padding-left: 1.5rem;
+  line-height: 1.5;
+}
+
+.tuner-instructions li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #d4a574;
+  font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tuner-section {
+    padding: 2rem 0;
+  }
+
+  .tuner-content {
+    padding: 1.5rem;
+  }
+
+  .frequency-value {
+    font-size: 2rem;
+  }
+
+  .note-info {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .tuning-meter {
+    max-width: 100%;
+  }
+
+  .mic-button {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .tuner-header .section-title {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tuner-content {
+    padding: 1rem;
+  }
+
+  .frequency-display {
+    min-height: 100px;
+  }
+
+  .frequency-value {
+    font-size: 1.8rem;
+  }
+
+  .note-name {
+    font-size: 1.4rem;
+  }
+
+  .note-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .meter-label {
+    font-size: 0.8rem;
+  }
+
+  .mic-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .tuner-instructions {
+    padding: 1rem;
+  }
+
+  .tuner-instructions ul {
+    padding-left: 1rem;
+  }
+
+  .tuner-instructions li {
+    padding-left: 1.2rem;
+    font-size: 0.85rem;
+  }
+}

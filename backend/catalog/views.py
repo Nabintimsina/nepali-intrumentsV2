@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Category, Instrument, Media, Expert, LearningContent, Contact
+from .models import Category, Instrument, Media, Expert, LearningContent, Contact, Tutorial, TunerConfiguration
 from .serializers import (
     CategorySerializer,
     InstrumentListSerializer,
@@ -12,6 +12,8 @@ from .serializers import (
     ExpertDetailSerializer,
     LearningContentSerializer,
     ContactSerializer,
+    TutorialSerializer,
+    TunerConfigurationSerializer,
 )
 from .permissions import IsAdminOrReadOnly
 from .filters import InstrumentFilter
@@ -35,6 +37,23 @@ class InstrumentViewSet(viewsets.ModelViewSet):
         if self.action == 'retrieve':
             return InstrumentDetailSerializer
         return InstrumentListSerializer
+    
+    @action(detail=True, methods=['get'], permission_classes=[AllowAny])
+    def tutorials(self, request, pk=None):
+        instrument = self.get_object()
+        tutorials = instrument.tutorials.all()
+        serializer = TutorialSerializer(tutorials, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'], permission_classes=[AllowAny])
+    def tuner_config(self, request, pk=None):
+        instrument = self.get_object()
+        try:
+            config = instrument.tuner_config
+            serializer = TunerConfigurationSerializer(config)
+            return Response(serializer.data)
+        except TunerConfiguration.DoesNotExist:
+            return Response(None)
 
 
 class MediaViewSet(viewsets.ModelViewSet):
@@ -76,3 +95,18 @@ class ContactViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save()
+
+
+class TutorialViewSet(viewsets.ModelViewSet):
+    queryset = Tutorial.objects.all()
+    serializer_class = TutorialSerializer
+    permission_classes = [IsAdminOrReadOnly]
+    search_fields = ['title', 'instructor_name']
+    ordering_fields = ['created_at', 'instructor_name']
+
+
+class TunerConfigurationViewSet(viewsets.ModelViewSet):
+    queryset = TunerConfiguration.objects.all()
+    serializer_class = TunerConfigurationSerializer
+    permission_classes = [IsAdminOrReadOnly]
+    ordering_fields = ['tuning_name', 'is_default']

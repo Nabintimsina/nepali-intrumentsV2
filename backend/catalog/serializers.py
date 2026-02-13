@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Instrument, Media, Expert, LearningContent, Contact
+from .models import Category, Instrument, Media, Expert, LearningContent, Contact, Tutorial, TunerConfiguration
 
 
 def get_media_url(media_obj: Media | None, request=None) -> str | None:
@@ -157,3 +157,18 @@ class ContactSerializer(serializers.ModelSerializer):
         model = Contact
         fields = ['id', 'name', 'email', 'subject', 'message', 'is_read', 'created_at']
         read_only_fields = ['id', 'is_read', 'created_at']
+
+
+class TutorialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tutorial
+        fields = ['id', 'instrument', 'title', 'description', 'video_url', 'instructor_name', 'duration', 'created_at']
+        read_only_fields = ['created_at']
+
+
+class TunerConfigurationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TunerConfiguration
+        fields = ['id', 'instrument', 'tuning_name', 'notes', 'frequencies', 'is_default', 'created_at']
+        read_only_fields = ['created_at']
+
