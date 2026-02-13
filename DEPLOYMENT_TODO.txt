@@ -18,13 +18,23 @@ STEP 2: UPLOAD FILES TO SERVER
     - db.sqlite3
     - nepali_platform/ folder
     - catalog/ folder
-    - media/ folder
+    - media/ folder (contains video, audio, 3D models, images)
 
 [ ] Upload dist/ contents → /home1/bajanepa/public_html/
     - index.html
     - assets/ folder
+    - audio/, images/, models/, videos/ folders
 
 [ ] Upload public/.htaccess → /home1/bajanepa/public_html/.htaccess
+    - IMPORTANT: Enable "Show Hidden Files" to see it
+
+STEP 2.5: CREATE SYMLINK FOR MEDIA (CRITICAL - REQUIRED FOR VIDEOS/TUNER!)
+[ ] Open cPanel → Advanced → Terminal
+[ ] Run: rm -rf /home1/bajanepa/public_html/api/media
+[ ] Run: ln -s /home1/bajanepa/bajanepalV2/backend/media /home1/bajanepa/public_html/api/media
+[ ] Verify: ls -la /home1/bajanepa/public_html/api/
+[ ] Check for: lrwxrwxrwx media -> /home1/bajanepa/bajanepalV2/backend/media
+    (Arrow → indicates symlink is working)
 
 STEP 3: CONFIGURE CPANEL PYTHON APP
 [ ] Login to cPanel → Software → Setup Python App
@@ -73,6 +83,12 @@ STEP 9: TEST DEPLOYMENT
 [ ] Test Instruments: https://bajanepal.com/api/instruments/
     - Returns instrument list
     
+[ ] Test Tutorials API: https://bajanepal.com/api/instruments/3/tutorials/
+    - Returns video tutorial data (200 OK)
+    
+[ ] Test Tuner Config API: https://bajanepal.com/api/instruments/3/tuner_config/
+    - Returns tuner configuration (200 OK)
+    
 [ ] Test Experts: https://bajanepal.com/api/catalog/experts/
     - Returns expert list
     
@@ -81,6 +97,12 @@ STEP 9: TEST DEPLOYMENT
     - Navigation works
     - Data displays from API
     - All routes accessible
+    
+[ ] Test Instrument Detail Page: https://bajanepal.com/instruments/3
+    - 3D Model loads
+    - Video Tutorials section appears (CRITICAL!)
+    - Tuner component loads with microphone button (CRITICAL!)
+    - Clear browser cache (Ctrl+Shift+Delete) if not showing
 
 STEP 10: SECURITY
 [ ] Change default admin password (if used script)
@@ -108,6 +130,47 @@ tail -f error.log
 
 ===============================================================================
 TROUBLESHOOTING
+===============================================================================
+
+VIDEOS & TUNER NOT SHOWING?
+→ This means symlink is missing or broken!
+→ Check: ls -la /home1/bajanepa/public_html/api/
+→ Should show: lrwxrwxrwx media -> /home1/bajanepa/bajanepalV2/backend/media
+→ Fix: rm -rf /home1/bajanepa/public_html/api/media
+→ Then: ln -s /home1/bajanepa/bajanepalV2/backend/media /home1/bajanepa/public_html/api/media
+→ Clear browser cache and reload page
+
+MEDIA FILES RETURN 404?
+→ Symlink is broken or pointing to wrong location
+→ Check: ls -la /home1/bajanepa/bajanepalV2/backend/media/
+→ Verify files exist: videos/, audio/, models/, images/ folders
+→ Recreate symlink (see above)
+
+API RETURNS DATA BUT FRONTEND SHOWS BLANK?
+→ Data loaded but not displayed
+→ Clear browser cache: Ctrl+Shift+Delete
+→ Hard refresh: Ctrl+F5
+→ Check console (F12) for JavaScript errors
+→ Verify API URL correct in .env.production: https://bajanepal.com/api
+
+Python App Won't Start?
+→ Check error log in cPanel Python Apps section
+→ Verify passenger_wsgi.py exists in /home1/bajanepa/bajanepal/backend/
+→ Check Python version (3.9+)
+→ Restart Python app
+
+Admin Page Has No Styling?
+→ Static files not collected
+→ Run: python manage.py collectstatic --noinput --settings=nepali_platform.settings_production
+→ Clear browser cache
+
+CORS/Permission Errors?
+→ Check ALLOWED_HOSTS in settings_production.py
+→ Should include: bajanepal.com, www.bajanepal.com
+→ Restart Python app after changes
+
+===============================================================================
+DEPLOYMENT COMPLETE!
 ===============================================================================
 
 Python App Error?
