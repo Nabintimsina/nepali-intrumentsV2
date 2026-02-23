@@ -98,6 +98,7 @@ function Viewer3D({ modelSrc, title }) {
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [rotation, setRotation] = useState(0)
   const [modelError, setModelError] = useState(false)
+  const [brightness, setBrightness] = useState(5) // Default brightness set to full
   const rotationY = useMemo(() => (rotation * Math.PI) / 180, [rotation])
 
   // Debug logging
@@ -134,6 +135,19 @@ function Viewer3D({ modelSrc, title }) {
           <button onClick={toggleFullscreen} aria-label="Toggle fullscreen" title="Fullscreen">
             {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
           </button>
+          <div className="brightness-control" style={{ display: 'inline-flex', alignItems: 'center', marginLeft: '1em' }}>
+            <label htmlFor="brightness-slider" style={{ marginRight: 6, fontSize: '0.95em' }}>Brightness</label>
+            <input
+              id="brightness-slider"
+              type="range"
+              min={1}
+              max={5}
+              step={0.1}
+              value={brightness}
+              onChange={e => setBrightness(Number(e.target.value))}
+              style={{ width: 80 }}
+            />
+          </div>
         </div>
       </div>
 
@@ -145,14 +159,14 @@ function Viewer3D({ modelSrc, title }) {
               gl.physicallyCorrectLights = true
             }}
           >
-            <ambientLight intensity={0.6} />
-            <directionalLight position={[4, 6, 4]} intensity={1} />
+            <ambientLight intensity={brightness} />
+            <directionalLight position={[4, 6, 4]} intensity={brightness * 1.8} />
             <ModelErrorBoundary>
               <Suspense fallback={<LoadingFallback />}>
                 <Bounds fit clip observe margin={1.2}>
                   <Model src={modelSrc} rotationY={rotationY} />
                 </Bounds>
-                <Environment preset="city" />
+                <Environment preset="city" exposure={brightness} />
               </Suspense>
             </ModelErrorBoundary>
             <OrbitControls enablePan enableZoom makeDefault />
